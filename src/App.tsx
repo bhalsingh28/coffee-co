@@ -9,7 +9,6 @@ import {
   Menu,
   X,
   Star,
-  Plus,
   ArrowRight,
   ChevronLeft,
   ChevronRight,
@@ -23,6 +22,10 @@ import {
   MapPin,
   Phone,
   CheckCircle,
+  Home,
+  Compass,
+  Sparkles,
+  BadgeCheck,
 } from "lucide-react";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
@@ -215,88 +218,99 @@ function StarRating({
   );
 }
 
-function ProductCard({ product, index }: { product: Product; index: number }) {
-  const [wishlisted, setWishlisted] = useState(false);
-  const [added, setAdded] = useState(false);
-
-  function handleAdd() {
-    setAdded(true);
-    setTimeout(() => setAdded(false), 1600);
-  }
+function MobileBottomNav() {
+  const items = [
+    { label: "Home", icon: Home, active: true },
+    { label: "Shop", icon: Compass },
+    { label: "Offers", icon: Sparkles },
+    { label: "Cart", icon: ShoppingBag },
+    { label: "Profile", icon: User },
+  ];
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.45, delay: index * 0.07 }}
-      viewport={{ once: true }}
-      className="flex-shrink-0 w-[220px] md:w-[260px] bg-card rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300 group"
-    >
-      <div className="relative overflow-hidden bg-secondary h-[200px] md:h-[240px]">
-        <img
-          src={product.image}
-          alt={product.name}
-          loading="lazy"
-          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-        />
-        {product.tag && (
-          <span className="absolute top-3 left-3 bg-primary text-primary-foreground text-[10px] font-semibold tracking-wider uppercase px-2.5 py-1 rounded-full">
-            {product.tag}
-          </span>
-        )}
-        <button
-          onClick={() => setWishlisted(!wishlisted)}
-          className="absolute top-3 right-3 w-8 h-8 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center shadow-sm transition-transform duration-200 active:scale-90"
-          aria-label="Add to wishlist"
-        >
-          <Heart
-            size={14}
-            className={
-              wishlisted ? "fill-red-500 text-red-500" : "text-gray-400"
-            }
-          />
-        </button>
-      </div>
-      <div className="p-4">
-        {product.roast && (
-          <span className="text-[10px] font-medium text-muted-foreground uppercase tracking-widest">
-            {product.roast}
-          </span>
-        )}
-        <h3 className="font-semibold text-sm mt-0.5 leading-snug text-foreground line-clamp-2 min-h-[44px]">
-          {product.name}
-        </h3>
-        <div className="flex items-center gap-1.5 mt-1.5">
-          <StarRating rating={product.rating} />
-          <span className="text-[10px] text-muted-foreground">
-            ({product.reviews})
-          </span>
-        </div>
-        <div className="flex items-center justify-between mt-3">
-          <div className="flex items-baseline gap-1.5">
-            <span className="font-semibold text-foreground">
-              ₹{product.price}
-            </span>
-            {product.originalPrice && (
-              <span className="text-xs text-muted-foreground line-through">
-                ₹{product.originalPrice}
-              </span>
-            )}
-          </div>
+    <nav className="fixed inset-x-0 bottom-0 z-50 border-t border-blue-100/80 bg-white/95 backdrop-blur-xl md:hidden">
+      <div className="mx-auto flex max-w-6xl items-center justify-between px-2 py-2">
+        {items.map(({ label, icon: Icon, active }) => (
           <button
-            onClick={handleAdd}
-            className={`flex items-center gap-1 text-xs font-semibold px-3 py-1.5 rounded-full transition-all duration-200 active:scale-95 cursor-pointer ${
-              added
-                ? "bg-green-500 text-white"
-                : "bg-primary text-primary-foreground"
+            key={label}
+            className={`flex flex-1 flex-col items-center gap-1 rounded-2xl px-2 py-2 text-[11px] font-medium transition-all ${
+              active ? "text-primary" : "text-slate-500"
             }`}
           >
-            {added ? <CheckCircle size={12} /> : <Plus size={12} />}
-            {added ? "Added" : "Add"}
+            <div className={`rounded-full p-1.5 ${active ? "bg-blue-50" : ""}`}>
+              <Icon size={16} />
+            </div>
+            <span>{label}</span>
           </button>
+        ))}
+      </div>
+    </nav>
+  );
+}
+
+function MobileExperienceCards() {
+  const highlights = [
+    {
+      title: "Freshly roasted",
+      text: "Roasted to order and shipped within 24 hours.",
+      icon: BadgeCheck,
+    },
+    {
+      title: "Free delivery",
+      text: "Enjoy seamless delivery on orders above ₹800.",
+      icon: Truck,
+    },
+    {
+      title: "Member perks",
+      text: "Get early access to new origins and launch drops.",
+      icon: Sparkles,
+    },
+  ];
+
+  return (
+    <section className="px-4 pb-4 sm:px-6">
+      <div className="rounded-[24px] border border-blue-100 bg-white p-3 shadow-[0_18px_45px_rgba(10,6,255,0.08)]">
+        <div className="mb-3 flex items-center justify-between">
+          <div>
+            <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-primary">
+              Why it feels premium
+            </p>
+            <h2 className="text-base font-semibold text-slate-900">
+              Curated for your daily ritual
+            </h2>
+          </div>
+          <span className="rounded-full bg-blue-50 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-primary">
+            New
+          </span>
+        </div>
+        <div className="flex gap-3 overflow-x-auto pb-1">
+          {highlights.map((item, index) => {
+            const Icon = item.icon;
+            return (
+              <motion.a
+                key={item.title}
+                href="#"
+                initial={{ opacity: 0, y: 12 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.35, delay: index * 0.06 }}
+                viewport={{ once: true }}
+                className="min-w-[152px] rounded-[18px] border border-slate-100 bg-slate-50/80 p-3"
+              >
+                <div className="mb-2 flex h-9 w-9 items-center justify-center rounded-full bg-primary/10 text-primary">
+                  <Icon size={16} />
+                </div>
+                <p className="text-sm font-semibold text-slate-900">
+                  {item.title}
+                </p>
+                <p className="mt-1 text-xs leading-relaxed text-slate-500">
+                  {item.text}
+                </p>
+              </motion.a>
+            );
+          })}
         </div>
       </div>
-    </motion.div>
+    </section>
   );
 }
 
@@ -484,48 +498,61 @@ function Header() {
                 damping: 30,
                 stiffness: 300,
               }}
-              className="absolute right-0 top-0 h-full w-[280px] bg-white flex flex-col shadow-2xl"
+              className="absolute right-0 top-0 h-full w-[290px] bg-white flex flex-col shadow-2xl"
               onClick={(e) => e.stopPropagation()}
             >
-              <div className="flex items-center justify-between px-5 h-16 border-b border-border">
-                <span
-                  className="font-bold text-base"
-                  style={{
-                    fontFamily: "'Playfair Display', serif",
-                  }}
-                >
-                  My Coffee Co.
-                </span>
-                <button
-                  onClick={() => setMenuOpen(false)}
-                  className="w-9 h-9 flex items-center justify-center rounded-full hover:bg-secondary transition-colors"
-                >
-                  <X size={18} />
-                </button>
-              </div>
-              <nav className="flex-1 overflow-y-auto px-5 py-6 flex flex-col gap-1">
-                {navLinks.map((link) => (
-                  <a
-                    key={link}
-                    href="#"
-                    className="flex items-center justify-between py-3 text-base font-medium text-foreground border-b border-border/50 hover:text-primary transition-colors"
+              <div className="relative overflow-hidden bg-gradient-to-br from-primary via-blue-600 to-[#0b0b8f] p-5 text-white">
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,0.25),transparent_45%)]" />
+                <div className="relative flex items-start justify-between">
+                  <div>
+                    <p className="text-[10px] font-semibold uppercase tracking-[0.24em] text-white/70">
+                      Coffee club
+                    </p>
+                    <p className="mt-2 text-lg font-semibold">
+                      Curated drops for calmer mornings.
+                    </p>
+                  </div>
+                  <button
                     onClick={() => setMenuOpen(false)}
+                    className="flex h-8 w-8 items-center justify-center rounded-full bg-white/15 backdrop-blur-sm"
                   >
-                    {link}
-                    <ArrowRight size={14} className="text-muted-foreground" />
-                  </a>
-                ))}
-              </nav>
-              <div className="px-5 py-6 border-t border-border flex flex-col gap-3">
-                <button className="w-full bg-primary text-primary-foreground font-semibold py-3 rounded-full text-sm transition-all active:scale-95">
+                    <X size={16} />
+                  </button>
+                </div>
+              </div>
+
+              <div className="flex-1 overflow-y-auto px-4 py-4">
+                <div className="rounded-[18px] border border-blue-100 bg-blue-50/70 p-3 text-sm text-slate-700">
+                  New this week • Amber Blend with roasted cacao notes.
+                </div>
+                <nav className="mt-4 flex flex-col gap-2">
+                  {navLinks.map((link, index) => (
+                    <motion.a
+                      key={link}
+                      href="#"
+                      initial={{ opacity: 0, x: 12 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: 0.05 * index }}
+                      className="flex items-center justify-between rounded-[14px] border border-transparent bg-slate-50 px-3 py-3 text-sm font-medium text-slate-700 transition-all hover:border-blue-100 hover:bg-white"
+                      onClick={() => setMenuOpen(false)}
+                    >
+                      {link}
+                      <ArrowRight size={14} className="text-primary" />
+                    </motion.a>
+                  ))}
+                </nav>
+              </div>
+
+              <div className="border-t border-border px-4 py-4">
+                <button className="w-full rounded-full bg-primary px-4 py-3 text-sm font-semibold text-white transition-all active:scale-95">
                   Shop Coffee
                 </button>
-                <div className="flex items-center justify-center gap-6 pt-2">
-                  <button className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors">
-                    <User size={16} /> Account
+                <div className="mt-3 flex items-center justify-center gap-4 text-sm text-slate-500">
+                  <button className="flex items-center gap-1.5 transition-colors hover:text-primary">
+                    <User size={14} /> Account
                   </button>
-                  <button className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors">
-                    <Heart size={16} /> Wishlist
+                  <button className="flex items-center gap-1.5 transition-colors hover:text-primary">
+                    <Heart size={14} /> Wishlist
                   </button>
                 </div>
               </div>
@@ -541,103 +568,69 @@ function Header() {
 
 function Hero() {
   return (
-    <section className="relative w-full overflow-hidden bg-foreground min-h-[520px] md:min-h-[720px]">
-      {/* Background image */}
+    <section className="relative w-full overflow-hidden bg-[#0500b8] min-h-[460px] md:min-h-[580px]">
       <div className="absolute inset-0">
         <img
           src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=1800&h=1200&fit=crop&auto=format"
           alt="Premium coffee being poured"
-          className="w-full h-full object-cover opacity-60"
+          className="h-full w-full object-cover opacity-60"
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/30 to-black/70" />
+        <div className="absolute inset-0 bg-gradient-to-br from-black/65 via-black/35 to-[#0a06ff]/80" />
       </div>
 
-      {/* Content */}
-      <div className="relative z-10 h-full flex flex-col justify-end pb-6 md:pb-20 px-5 md:px-12 max-w-7xl mx-auto w-full pt-16">
+      <div className="relative z-10 mx-auto flex h-full w-full max-w-7xl flex-col justify-between px-4 pb-6 pt-16 sm:px-6 md:px-10 md:pb-10">
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.1 }}
+          transition={{ duration: 0.7, delay: 0.08 }}
+          className="max-w-2xl"
         >
-          <span className="inline-block text-xs font-semibold uppercase tracking-[0.2em] text-white/70 mb-4">
-            Specialty Coffee · Roasted to Order
+          <span className="inline-block rounded-full border border-white/20 bg-white/10 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.24em] text-white/80">
+            Specialty Coffee • Roasted to Order
           </span>
-          <div className="flex flex-col gap-0">
-            <h1
-              className="text-white font-bold leading-[1.1] mb-2"
-              style={{
-                fontFamily: "'Playfair Display', serif",
-                fontSize: "clamp(2.4rem, 7vw, 5.5rem)",
-                maxWidth: "14ch",
-              }}
-            >
-              Small Sips
-            </h1>
-            <h1
-              className="text-white font-bold leading-[1.1] mb-4"
-              style={{
-                fontFamily: "'Playfair Display', serif",
-                fontSize: "clamp(2.4rem, 7vw, 5.5rem)",
-                maxWidth: "14ch",
-              }}
-            >
-              Big Moments
-            </h1>
-          </div>
-          <p className="text-white/80 text-base md:text-lg max-w-md mb-8 font-light leading-relaxed">
-            Discover rich flavors crafted for modern lifestyles. Freshly
-            sourced, expertly roasted, and delivered right to your door.
+          <h1
+            className="mt-4 text-4xl font-bold leading-[1.05] text-white sm:text-5xl"
+            style={{
+              fontFamily: "'Playfair Display', serif",
+            }}
+          >
+            Coffee that feels like a premium ritual.
+          </h1>
+          <p className="mt-3 max-w-lg text-sm leading-relaxed text-white/80 sm:text-base">
+            Discover bright single-origin beans, refined brewing gear, and a
+            calm shopping experience designed for your morning reset.
           </p>
-          {/* <div className="flex flex-col gap-3 max-w-xs"> */}
-          <div className="flex flex-col sm:flex-row gap-3 mt-5">
-            <button className="bg-primary text-primary-foreground font-semibold px-6 py-3 rounded-full w-fit sm:min-w-[10px] cursor-pointer">
+          <div className="mt-5 flex flex-col gap-2 sm:flex-row">
+            <button className="w-fit rounded-full bg-primary px-5 py-3 text-sm font-semibold text-white transition-all active:scale-95">
               Shop Collections
             </button>
-
-            <button className="bg-white/15 backdrop-blur-sm text-white font-semibold px-6 py-3 rounded-full border border-white/20 w-fit sm:min-w-[180px] cursor-pointer">
-              Explore Collections
+            <button className="w-fit rounded-full border border-white/20 bg-white/10 px-5 py-3 text-sm font-semibold text-white backdrop-blur-sm transition-all active:scale-95">
+              Explore New Launches
             </button>
           </div>
         </motion.div>
 
-        {/* Trust badges */}
         <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.6, delay: 0.5 }}
-          className="flex items-center gap-6 mt-10 pt-8 border-t border-white/15"
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+          className="mt-8 rounded-[20px] border border-white/15 bg-white/10 p-3 backdrop-blur-md"
         >
-          {[
-            { n: "50K+", l: "Happy Customers" },
-            { n: "98%", l: "Satisfaction Rate" },
-            { n: "3", l: "Coffee Blends" },
-
-            { n: "4.9★", l: "Average Rating" },
-          ].map((b) => (
-            <div key={b.n} className="flex flex-col">
-              <span className="text-white font-bold text-lg leading-none">
-                {b.n}
-              </span>
-              <span className="text-white/60 text-xs mt-0.5">{b.l}</span>
+          <div className="flex items-center justify-between gap-3 text-white/90">
+            <div>
+              <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-white/70">
+                Today’s highlight
+              </p>
+              <p className="text-sm font-semibold">
+                Amber Blend • Dark chocolate, roasted nuts
+              </p>
             </div>
-          ))}
+            <button className="rounded-full bg-white px-3 py-2 text-xs font-semibold text-primary">
+              Try it
+            </button>
+          </div>
         </motion.div>
       </div>
-
-      {/* Scroll hint */}
-      <motion.div
-        className="absolute bottom-5 right-5 md:right-10"
-        animate={{ y: [0, 6, 0] }}
-        transition={{
-          repeat: Infinity,
-          duration: 2,
-          ease: "easeInOut",
-        }}
-      >
-        <div className="w-5 h-8 rounded-full border border-white/30 flex items-start justify-center pt-1.5">
-          <div className="w-1 h-2 bg-white/50 rounded-full" />
-        </div>
-      </motion.div>
     </section>
   );
 }
@@ -646,14 +639,14 @@ function Hero() {
 
 function FeaturedCategories() {
   return (
-    <section className="py-8 md:py-10 px-4 md:px-6 max-w-7xl mx-auto">
-      <div className="flex items-end justify-between mb-6 md:mb-8">
+    <section className="px-4 py-5 sm:px-6">
+      <div className="mb-4 flex items-end justify-between">
         <div>
-          <span className="text-xs font-semibold uppercase tracking-[0.18em] text-primary mb-2 block">
+          <span className="mb-2 block text-[10px] font-semibold uppercase tracking-[0.2em] text-primary">
             Browse
           </span>
           <h2
-            className="text-2xl md:text-3xl font-bold text-foreground"
+            className="text-2xl font-bold text-slate-900"
             style={{ fontFamily: "'Playfair Display', serif" }}
           >
             Shop by Category
@@ -661,41 +654,47 @@ function FeaturedCategories() {
         </div>
         <a
           href="#"
-          className="hidden md:flex items-center gap-1 text-sm font-medium text-primary hover:gap-2 transition-all"
+          className="hidden text-sm font-medium text-primary md:inline-flex"
         >
-          View all <ArrowRight size={14} />
+          View all
         </a>
       </div>
 
-      <div className="grid grid-cols-2 md:grid-cols-5 gap-3 md:gap-4">
-        {categories.map((cat, i) => (
-          <motion.a
-            key={cat.name}
-            href="#"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4, delay: i * 0.06 }}
-            viewport={{ once: true }}
-            className={`relative overflow-hidden rounded-2xl group cursor-pointer ${
-              i === 0 ? "col-span-2 md:col-span-1" : ""
-            }`}
-            style={{ aspectRatio: "1/1" }}
-          >
-            <img
-              src={cat.image}
-              alt={cat.name}
-              loading="lazy"
-              className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-108"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
-            <div className="absolute bottom-0 left-0 right-0 p-3 md:p-4">
-              <p className="text-white font-semibold text-sm md:text-base leading-snug">
-                {cat.name}
-              </p>
-              <p className="text-white/60 text-xs mt-0.5">{cat.count}</p>
-            </div>
-          </motion.a>
-        ))}
+      <div className="flex gap-3 overflow-x-auto pb-2">
+        {categories.map((cat, i) => {
+          const Icon = cat.icon;
+          return (
+            <motion.a
+              key={cat.name}
+              href="#"
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4, delay: i * 0.05 }}
+              viewport={{ once: true }}
+              className="min-w-[150px] overflow-hidden rounded-[20px] border border-slate-200 bg-white shadow-sm"
+            >
+              <div className="relative aspect-[4/3] bg-slate-50">
+                <img
+                  src={cat.image}
+                  alt={cat.name}
+                  loading="lazy"
+                  className="h-full w-full object-cover"
+                />
+              </div>
+              <div className="p-3">
+                <div className="flex items-center justify-between">
+                  <p className="text-sm font-semibold text-slate-900">
+                    {cat.name}
+                  </p>
+                  <div className="rounded-full bg-blue-50 p-1.5 text-primary">
+                    <Icon size={14} />
+                  </div>
+                </div>
+                <p className="mt-1 text-xs text-slate-500">{cat.count}</p>
+              </div>
+            </motion.a>
+          );
+        })}
       </div>
     </section>
   );
@@ -704,26 +703,26 @@ function FeaturedCategories() {
 // ─── Best Sellers ─────────────────────────────────────────────────────────────
 
 function BestSellers() {
-  const scrollRef = useRef<HTMLDivElement>(null);
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [direction, setDirection] = useState(1);
 
-  function scroll(dir: "left" | "right") {
-    if (!scrollRef.current) return;
-    scrollRef.current.scrollBy({
-      left: dir === "left" ? -280 : 280,
-      behavior: "smooth",
-    });
+  function goTo(index: number) {
+    setDirection(index > activeIndex ? 1 : -1);
+    setActiveIndex(index);
   }
 
+  const activeProduct = bestSellers[activeIndex];
+
   return (
-    <section className="py-1 md:py-6 bg-secondary">
-      <div className="max-w-7xl mx-auto px-4 md:px-6">
-        <div className="flex items-end justify-between mb-6 md:mb-8">
+    <section className="bg-[#f5f7ff] py-4 sm:py-6">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6">
+        <div className="mb-5 flex items-end justify-between">
           <div>
-            <span className="text-xs font-semibold uppercase tracking-[0.18em] text-primary mb-2 block">
+            <span className="mb-2 block text-[10px] font-semibold uppercase tracking-[0.2em] text-primary">
               Our New Launches
             </span>
             <h2
-              className="text-2xl md:text-3xl font-bold text-foreground"
+              className="text-2xl font-bold text-slate-900"
               style={{
                 fontFamily: "'Playfair Display', serif",
               }}
@@ -733,15 +732,19 @@ function BestSellers() {
           </div>
           <div className="flex items-center gap-2">
             <button
-              onClick={() => scroll("left")}
-              className="w-9 h-9 bg-card rounded-full flex items-center justify-center shadow-sm hover:shadow-md transition-shadow border border-border"
+              onClick={() =>
+                goTo(
+                  (activeIndex - 1 + bestSellers.length) % bestSellers.length,
+                )
+              }
+              className="flex h-9 w-9 items-center justify-center rounded-full border border-border bg-card shadow-sm transition-shadow hover:shadow-md"
               aria-label="Scroll left"
             >
               <ChevronLeft size={16} />
             </button>
             <button
-              onClick={() => scroll("right")}
-              className="w-9 h-9 bg-card rounded-full flex items-center justify-center shadow-sm hover:shadow-md transition-shadow border border-border"
+              onClick={() => goTo((activeIndex + 1) % bestSellers.length)}
+              className="flex h-9 w-9 items-center justify-center rounded-full border border-border bg-card shadow-sm transition-shadow hover:shadow-md"
               aria-label="Scroll right"
             >
               <ChevronRight size={16} />
@@ -750,33 +753,101 @@ function BestSellers() {
         </div>
       </div>
 
-      <div
-        ref={scrollRef}
-        className="flex gap-4 overflow-x-auto scrollbar-hide pl-4 md:pl-6 pr-4 md:pr-6 max-w-7xl mx-auto pb-2"
-        style={{ scrollSnapType: "x mandatory" }}
-      >
-        {bestSellers.map((product, i) => (
-          <div key={product.id} style={{ scrollSnapAlign: "start" }}>
-            <ProductCard product={product} index={i} />
+      <div className="mx-auto flex max-w-7xl flex-col gap-4 px-4 pb-2 sm:px-6 lg:flex-row">
+        <div className="overflow-hidden rounded-[28px] border border-blue-100 bg-white p-3 shadow-[0_18px_50px_rgba(10,6,255,0.08)] lg:w-[62%]">
+          <AnimatePresence mode="wait" initial={false}>
+            <motion.div
+              key={activeProduct.id}
+              initial={{ opacity: 0, x: direction > 0 ? 40 : -40 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: direction > 0 ? -40 : 40 }}
+              transition={{ duration: 0.35, ease: "easeOut" }}
+              className="rounded-[22px] bg-slate-50 p-3"
+            >
+              <div className="relative overflow-hidden rounded-[18px] bg-slate-100">
+                <img
+                  src={activeProduct.image}
+                  alt={activeProduct.name}
+                  className="h-[240px] w-full object-cover sm:h-[300px]"
+                />
+                {activeProduct.tag && (
+                  <span className="absolute left-3 top-3 rounded-full bg-primary px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-white">
+                    {activeProduct.tag}
+                  </span>
+                )}
+              </div>
+              <div className="mt-4 flex items-start justify-between gap-3">
+                <div>
+                  <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-primary">
+                    {activeProduct.roast}
+                  </p>
+                  <h3 className="mt-1 text-lg font-semibold text-slate-900">
+                    {activeProduct.name}
+                  </h3>
+                  <div className="mt-2 flex items-center gap-2">
+                    <StarRating rating={activeProduct.rating} />
+                    <span className="text-sm text-slate-500">
+                      ({activeProduct.reviews} reviews)
+                    </span>
+                  </div>
+                </div>
+                <div className="rounded-full bg-primary/10 px-3 py-2 text-sm font-semibold text-primary">
+                  ₹{activeProduct.price}
+                </div>
+              </div>
+              <div className="mt-4 flex items-center justify-between gap-3">
+                <p className="text-sm text-slate-500">
+                  Freshly roasted for your next ritual.
+                </p>
+                <button className="rounded-full bg-primary px-4 py-2 text-sm font-semibold text-white transition-all active:scale-95">
+                  Add to cart
+                </button>
+              </div>
+            </motion.div>
+          </AnimatePresence>
+        </div>
+
+        <div className="rounded-[24px] border border-blue-100 bg-white p-3 shadow-[0_16px_40px_rgba(10,6,255,0.06)] lg:w-[38%]">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-primary">
+                Browse the lineup
+              </p>
+              <h3 className="text-base font-semibold text-slate-900">
+                Pick your next roast
+              </h3>
+            </div>
+            <div className="rounded-full bg-blue-50 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-primary">
+              5 picks
+            </div>
           </div>
-        ))}
-        {/* View all card */}
-        <motion.a
-          href="#"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.4, delay: 0.35 }}
-          viewport={{ once: true }}
-          className="flex-shrink-0 w-[220px] md:w-[260px] bg-primary/5 border-2 border-dashed border-primary/20 rounded-2xl flex flex-col items-center justify-center gap-3 p-8 hover:bg-primary/10 transition-colors group cursor-pointer"
-        >
-          <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center group-hover:bg-primary/20 transition-colors">
-            <ArrowRight size={20} className="text-primary" />
+          <div className="mt-3 space-y-2">
+            {bestSellers.map((product, index) => (
+              <button
+                key={product.id}
+                onClick={() => goTo(index)}
+                className={`flex w-full items-center gap-3 rounded-[16px] border px-2.5 py-2 text-left transition-all ${
+                  activeIndex === index
+                    ? "border-primary bg-blue-50"
+                    : "border-transparent bg-slate-50"
+                }`}
+              >
+                <img
+                  src={product.image}
+                  alt={product.name}
+                  className="h-12 w-12 rounded-[12px] object-cover"
+                />
+                <div className="min-w-0 flex-1">
+                  <p className="truncate text-sm font-semibold text-slate-900">
+                    {product.name}
+                  </p>
+                  <p className="text-xs text-slate-500">₹{product.price}</p>
+                </div>
+                <ChevronRight size={14} className="text-slate-400" />
+              </button>
+            ))}
           </div>
-          <div className="text-center">
-            <p className="font-semibold text-foreground text-sm">View All</p>
-            <p className="text-xs text-muted-foreground mt-0.5">20+ products</p>
-          </div>
-        </motion.a>
+        </div>
       </div>
     </section>
   );
@@ -1233,110 +1304,78 @@ function Newsletter() {
 // ─── Footer ───────────────────────────────────────────────────────────────────
 
 function Footer() {
-  const links = {
-    Shop: [
-      "Coffee Beans",
-      "Drip Bags",
-      "Instant Coffee",
-      "Equipment",
-      "Accessories",
-    ],
-    Learn: [
-      "Brew Guides",
-      "Origin Stories",
-      "Coffee Science",
-      "Tasting Notes",
-      "Blog",
-    ],
-    Company: [
-      "About Us",
-      "Sustainability",
-      "Careers",
-      "Locations",
-      "Terms of Service",
-    ],
-    Support: ["FAQ", "Shipping", "Returns", "Contact Us", "Track Order"],
-  };
-
   return (
-    <footer className="bg-foreground text-white">
-      {/* Top */}
-      <div className="max-w-7xl mx-auto px-4 md:px-6 pt-12 pb-12 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-8">
-        {/* Brand */}
-        <div className="col-span-2 md:col-span-1">
-          <div className="flex items-center gap-2 mb-5">
-            <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-              <Coffee size={16} className="text-white" />
-            </div>
-            <span
-              className="font-bold text-base"
-              style={{
-                fontFamily: "'Playfair Display', serif",
-              }}
-            >
-              My Coffee Co.
-            </span>
-          </div>
-          <p className="text-white/55 text-xs leading-relaxed mb-5">
-            Premium coffee crafted for modern lifestyles and unforgettable
-            moments. From farm to cup, we ensure only the finest.
-          </p>
-          {/* <div className="flex gap-3">
-            {[, Facebook, Twitter].map((Icon, i) => (
-              <a
-                key={i}
-                href="#"
-                className="w-8 h-8 bg-white/10 rounded-full flex items-center justify-center hover:bg-primary transition-colors"
-                aria-label="Social media"
+    <footer className="border-t border-slate-200 bg-white px-4 pb-24 pt-6 sm:px-6 md:pb-8">
+      <div className="mx-auto flex max-w-7xl flex-col gap-4">
+        <div className="flex items-start justify-between">
+          <div>
+            <div className="flex items-center gap-2">
+              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary">
+                <Coffee size={16} className="text-white" />
+              </div>
+              <span
+                className="text-base font-bold text-slate-900"
+                style={{ fontFamily: "'Playfair Display', serif" }}
               >
-                <Icon size={14} />
-              </a>
-            ))}
-          </div>  */}
+                My Coffee Co.
+              </span>
+            </div>
+            <p className="mt-2 max-w-sm text-sm leading-relaxed text-slate-500">
+              Premium coffee for calm mornings, slow afternoons, and
+              unforgettable rituals.
+            </p>
+          </div>
+          <a
+            href="mailto:hello@mycoffeeco.com"
+            className="rounded-full bg-blue-50 px-3 py-2 text-xs font-semibold text-primary"
+          >
+            Contact us
+          </a>
         </div>
 
-        {/* Links */}
-        {Object.entries(links).map(([heading, items]) => (
-          <div key={heading}>
-            <p className="font-semibold text-xs uppercase tracking-widest mb-4 text-white/90">
-              {heading}
+        <div className="grid grid-cols-2 gap-4 text-sm text-slate-600">
+          <div>
+            <p className="mb-2 text-[11px] font-semibold uppercase tracking-[0.2em] text-slate-400">
+              Explore
             </p>
-            <ul className="flex flex-col gap-2.5">
-              {items.map((item) => (
-                <li key={item}>
-                  <a
-                    href="#"
-                    className="text-white/50 text-xs hover:text-white transition-colors"
-                  >
-                    {item}
-                  </a>
-                </li>
-              ))}
+            <ul className="space-y-1.5">
+              <li>
+                <a href="#" className="hover:text-primary">
+                  Coffee Beans
+                </a>
+              </li>
+              <li>
+                <a href="#" className="hover:text-primary">
+                  Drip Bags
+                </a>
+              </li>
+              <li>
+                <a href="#" className="hover:text-primary">
+                  Equipment
+                </a>
+              </li>
             </ul>
           </div>
-        ))}
-      </div>
-
-      {/* Contact strip */}
-      <div className="border-t border-white/10">
-        <div className="max-w-7xl mx-auto px-4 md:px-6 py-4 flex flex-wrap gap-4 items-center justify-between">
-          <div className="flex flex-wrap gap-5 text-white/40 text-xs">
-            <span className="flex items-center gap-1.5">
-              <MapPin size={11} /> India
-            </span>
-            <a
-              href="mailto:hello@mycoffeeco.com"
-              className="flex items-center gap-1.5 hover:text-white transition-colors"
-            >
-              <Mail size={11} /> hello@mycoffeeco.com
-            </a>
-            <a
-              href="tel:+910000000000"
-              className="flex items-center gap-1.5 hover:text-white transition-colors"
-            >
-              <Phone size={11} /> +91 00000 00000
-            </a>
+          <div>
+            <p className="mb-2 text-[11px] font-semibold uppercase tracking-[0.2em] text-slate-400">
+              Visit
+            </p>
+            <ul className="space-y-1.5">
+              <li className="flex items-center gap-1.5">
+                <MapPin size={13} /> India
+              </li>
+              <li className="flex items-center gap-1.5">
+                <Mail size={13} /> hello@mycoffeeco.com
+              </li>
+              <li className="flex items-center gap-1.5">
+                <Phone size={13} /> +91 00000 00000
+              </li>
+            </ul>
           </div>
+        </div>
+
+        <div className="border-t border-slate-200 pt-3 text-xs text-slate-400">
+          © 2026 My Coffee Co. Crafted for modern rituals.
         </div>
       </div>
     </footer>
@@ -1362,8 +1401,9 @@ export default function App() {
       {/* <AnnouncementBar /> */}
       <Header />
 
-      <main>
+      <main className="pb-24 md:pb-0">
         <Hero />
+        <MobileExperienceCards />
         <FeaturedCategories />
         <EquipmentGrid />
         <BestSellers />
@@ -1375,6 +1415,7 @@ export default function App() {
       </main>
 
       <Footer />
+      <MobileBottomNav />
     </div>
   );
 }
