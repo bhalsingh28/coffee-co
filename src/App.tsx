@@ -268,7 +268,7 @@ function MobileExperienceCards() {
   ];
 
   return (
-    <section className="px-4 pb-4 sm:px-6">
+    <section className="mx-auto max-w-7xl px-4 pb-4 sm:px-6">
       <div className="rounded-[24px] border border-blue-100 bg-white p-3 shadow-[0_18px_45px_rgba(10,6,255,0.08)]">
         <div className="mb-3 flex items-center justify-between">
           <div>
@@ -568,7 +568,7 @@ function Header() {
 
 function Hero() {
   return (
-    <section className="relative w-full overflow-hidden bg-[#0500b8] min-h-[460px] md:min-h-[580px]">
+    <section className="relative w-full overflow-hidden bg-[#0500b8] py-5 sm:py-8 md:py-10">
       <div className="absolute inset-0">
         <img
           src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=1800&h=1200&fit=crop&auto=format"
@@ -578,7 +578,7 @@ function Hero() {
         <div className="absolute inset-0 bg-gradient-to-br from-black/65 via-black/35 to-[#0a06ff]/80" />
       </div>
 
-      <div className="relative z-10 mx-auto flex h-full w-full max-w-7xl flex-col justify-between px-4 pb-6 pt-16 sm:px-6 md:px-10 md:pb-10">
+      <div className="relative z-10 mx-auto w-full max-w-7xl flex flex-col gap-4 px-4 sm:px-6 md:px-10">
         <motion.div
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
@@ -589,7 +589,7 @@ function Hero() {
             Specialty Coffee • Roasted to Order
           </span>
           <h1
-            className="mt-4 text-4xl font-bold leading-[1.05] text-white sm:text-5xl"
+            className="mt-3 text-4xl font-bold leading-[1.05] text-white sm:text-5xl"
             style={{
               fontFamily: "'Playfair Display', serif",
             }}
@@ -600,7 +600,7 @@ function Hero() {
             Discover bright single-origin beans, refined brewing gear, and a
             calm shopping experience designed for your morning reset.
           </p>
-          <div className="mt-5 flex flex-col gap-2 sm:flex-row">
+          <div className="mt-3 flex flex-col gap-2 sm:mt-4 sm:flex-row">
             <button className="w-fit rounded-full bg-primary px-5 py-3 text-sm font-semibold text-white transition-all active:scale-95">
               Shop Collections
             </button>
@@ -614,7 +614,7 @@ function Hero() {
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.2 }}
-          className="mt-8 rounded-[20px] border border-white/15 bg-white/10 p-3 backdrop-blur-md"
+          className="mt-3 rounded-[20px] border border-white/15 bg-white/10 p-3 backdrop-blur-md sm:mt-5"
         >
           <div className="flex items-center justify-between gap-3 text-white/90">
             <div>
@@ -639,7 +639,7 @@ function Hero() {
 
 function FeaturedCategories() {
   return (
-    <section className="px-4 py-5 sm:px-6">
+    <section className="mx-auto max-w-7xl px-4 py-5 sm:px-6">
       <div className="mb-4 flex items-end justify-between">
         <div>
           <span className="mb-2 block text-[10px] font-semibold uppercase tracking-[0.2em] text-primary">
@@ -1236,7 +1236,7 @@ function Newsletter() {
   }
 
   return (
-    <section className="py-8 md:py- px-4 md:px-6 bg-[#eef0ff]">
+    <section className="bg-[#eef0ff] px-4 py-3 md:px-6 md:py-4">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -1305,7 +1305,7 @@ function Newsletter() {
 
 function Footer() {
   return (
-    <footer className="border-t border-slate-200 bg-white px-4 pb-24 pt-6 sm:px-6 md:pb-8">
+    <footer className="border-t border-slate-200 bg-white px-4 pb-20 pt-5 sm:px-6 md:pb-8 md:pt-6">
       <div className="mx-auto flex max-w-7xl flex-col gap-4">
         <div className="flex items-start justify-between">
           <div>
